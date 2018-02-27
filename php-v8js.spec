@@ -1,11 +1,11 @@
-%define        pre_built_dir /home/lesstif/v8js
-%define        module_dir %(php-config --extension-dir)
-%define        ini_dir      /etc/php.d/
+%define        pre_built_dir /home/v8/v8js
+#%define        module_dir %(php-config --extension-dir)
+#%define        ini_dir      /etc/php.d/
 
-Name: v8js
+Name: php-v8js
 Summary: PHP extension for Google's V8 Javascript engine. 
-Version: 1.3.1
-Release: 2
+Version: 2.1.0
+Release: 1%{?dist}%{!?scl:%{!?nophptag:%(%{__php} -r 'echo ".".PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;')}}
 License: PHP
 Group: Development/Tools
 URL: https://github.com/phpv8/v8js
@@ -21,21 +21,21 @@ echo EXT_DIR=%{module_dir}
 
 %install
 rm -rf %{buildroot}
-mkdir -p  %{buildroot}/%{module_dir}
-mkdir -p  %{buildroot}/%{ini_dir}
+mkdir -p  %{buildroot}/%{php_extdir}
+mkdir -p  %{buildroot}/%{php_inidir}
 
 ## module
-cp %{pre_built_dir}/modules/v8js.so  %{buildroot}/%{module_dir}
+cp %{pre_built_dir}/modules/v8js.so  %{buildroot}/%{php_extdir}
 
 ## ini
-echo -e "; Enable v8js extension module\nextension=v8js.so" >  %{buildroot}/%{ini_dir}/v8js.ini
+echo -e "; Enable v8js extension module\nextension=v8js.so" >  %{buildroot}/%{php_inidir}/50-v8js.ini
 
 %clean
 
 %files
 %defattr(-,root,root,-)
-%{_sysconfdir}/php.d/*
-%{module_dir}/*
+/%{php_inidir}/*
+/%{php_extdir}/*
 
 %post
 

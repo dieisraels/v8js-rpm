@@ -140,7 +140,7 @@ yum install gcc-c++ make libicu-devel
 
 ### create v8 binary rpm package
 
-change */home/lesstif/v8* to your v8 checkout directory.
+change */home/v8/v8* to your v8 checkout directory.
 
 ```bash
 rpmbuild -bb v8.spec --buildroot=/tmp/v8 --define="pre_built_dir /home/lesstif/v8"
@@ -152,28 +152,29 @@ rpmbuild -bb v8.spec --buildroot=/tmp/v8 --define="pre_built_dir /home/lesstif/v
 ### clone v8js
 
   ```bash
+  cd ~
   git clone https://github.com/phpv8/v8js
   ```
 
 ### checkout tag
 
   ```bash
-  git checkout tags/1.3.1
+  git checkout php7
   ```
 
 ### compile
 
   ```bash
   phpize
-  ./configure
+  ./configure --with-v8js=/opt/v8 LDFLAGS="-lstdc++"
   make
   make test
   ```
 
 ### create v8js binary rpm package
 
-change */home/lesstif/v8js* to your v8js checkout directory.
+change */home/v8/v8js* to your v8js checkout directory.
 
 ```bash
-rpmbuild -bb v8js.spec --define="pre_built_dir /home/lesstif/v8js"
+rpmbuild -bb v8js.spec --define="pre_built_dir /home/v8/v8js"
 ```

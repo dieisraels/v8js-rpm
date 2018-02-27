@@ -22,24 +22,20 @@ BuildRoot: %{_tmppath}/%{name}
 
 %install
 rm -rf %{buildroot}
-mkdir -p  %{buildroot}/usr/{bin,include,lib64}
+mkdir -p  %{buildroot}/opt/v8/{include,lib}
 #mkdir -p  %{buildroot}/usr/share/v8
 
 ## binary & lib
-cp %{pre_built_dir}/bin/d8  %{buildroot}/usr/bin
-cp %{pre_built_dir}/lib/* %{buildroot}/usr/lib64
+cp %{pre_built_dir}/lib/* %{buildroot}/opt/v8/lib
 
 ## header files
-cp -R %{pre_built_dir}/include/*.h %{buildroot}/usr/include
-cp -R %{pre_built_dir}/include/libplatform %{buildroot}/usr/include
+cp -R %{pre_built_dir}/include/* %{buildroot}/opt/v8/include/
 
 %clean
 
 %files
 %defattr(-,root,root,-)
-%{_bindir}/*
-%{_includedir}/*
-%{_libdir}/*
+/opt/v8/*
 
 %changelog
 * Tue Feb 27 2018 Sergey Bondarev <s.bondarev@southbridge.ru>
