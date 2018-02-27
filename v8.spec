@@ -1,8 +1,8 @@
-%define        pre_built_dir /home/lesstif/v8
+%define        pre_built_dir ~/opt-v8
 
 Name: v8
 Summary: V8 is Google's open source high-performance JavaScript engine, written in C++ and used in Google Chrome, the open source browser from Google. It implements ECMAScript as specified in ECMA-262, 3rd edition, and runs on Windows XP or later, Mac OS X 10.5+, and Linux systems that use IA-32, ARM or MIPS processors. V8 can run standalone, or can be embedded into any C++ application.
-Version: 5.2.371
+Version: 6.5.237
 Release: 1
 License: BSD
 Group: Development/Tools
@@ -23,27 +23,15 @@ BuildRoot: %{_tmppath}/%{name}
 %install
 rm -rf %{buildroot}
 mkdir -p  %{buildroot}/usr/{bin,include,lib64}
-mkdir -p  %{buildroot}/usr/share/v8
+#mkdir -p  %{buildroot}/usr/share/v8
 
 ## binary & lib
-cp %{pre_built_dir}/out/x64.release/d8  %{buildroot}/usr/bin
-cp %{pre_built_dir}/out/x64.release/obj.target/src/libv8_libplatform.a %{buildroot}/usr/lib64
-cp %{pre_built_dir}/out/x64.release/lib.target/libv8.so  %{buildroot}/usr/lib64/libv8.so.%{version}
-
-# create symlib link
-ln -sf /usr/lib64/libv8.so.%{version}    %{buildroot}/usr/lib64/libv8.so.5
-ln -sf /usr/lib64/libv8.so.5             %{buildroot}/usr/lib64/libv8.so
+cp %{pre_built_dir}/bin/d8  %{buildroot}/usr/bin
+cp %{pre_built_dir}/lib/* %{buildroot}/usr/lib64
 
 ## header files
 cp -R %{pre_built_dir}/include/*.h %{buildroot}/usr/include
 cp -R %{pre_built_dir}/include/libplatform %{buildroot}/usr/include
-
-## doc
-cp %{pre_built_dir}/AUTHORS %{buildroot}/usr/share/v8
-cp %{pre_built_dir}/ChangeLog %{buildroot}/usr/share/v8
-cp %{pre_built_dir}/OWNERS      %{buildroot}/usr/share/v8
-cp %{pre_built_dir}/LICENSE*    %{buildroot}/usr/share/v8
-cp -R %{pre_built_dir}/samples  %{buildroot}/usr/share/v8
 
 %clean
 
@@ -52,8 +40,10 @@ cp -R %{pre_built_dir}/samples  %{buildroot}/usr/share/v8
 %{_bindir}/*
 %{_includedir}/*
 %{_libdir}/*
-%{_datarootdir}/*
 
 %changelog
+* Tue Feb 27 2018 Sergey Bondarev <s.bondarev@southbridge.ru>
+- Bump to version 6.5
+
 * Mon Aug 22 2016 KwangSeob Jeong <lesstif@gmail.com>
 - First Build
