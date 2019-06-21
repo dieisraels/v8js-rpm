@@ -74,7 +74,7 @@ yum install gcc-c++ make libicu-devel
   ```bash
   mkdir -p ~/opt-v8/{bin,lib,include}
   cp out.gn/x64.release/d8 ~/opt-v8/bin/
-  cp out.gn/x64.release/libv8*.so out.gn/x64.release/*_blob.bin ~/opt-v8/lib/
+  cp out.gn/x64.release/lib*.so out.gn/x64.release/*_blob.bin out.gn/x64.release/icudtl.dat ~/opt-v8/lib/
   cp -R include/* ~/opt-v8/include/
   ```
 
