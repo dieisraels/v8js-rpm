@@ -10,7 +10,7 @@ These RPM were built to have an easy way to install the [google's javascript eng
 ```bash
 $ wget https://github.com/lesstif/v8js-rpm/releases/download/5.2.371/v8-5.2.371-1.x86_64.rpm
 $ wget https://github.com/lesstif/v8js-rpm/releases/download/1.3.1-1/v8js-1.3.1-2.x86_64.rpm
-$ sudo yum localinstall v8*.rpm -y 
+$ sudo yum install v8*.rpm -y 
 ```
 
 ## Building the Binary RPM on RHEL 7
@@ -48,9 +48,9 @@ yum install gcc-c++ make libicu-devel
   cd v8
   ```
 
-### (optional) If you'd like to build a certain version:
+### (optional) If you'd like to build a certain version (version >= 7.4 not working with default libstdc++.so.6 on EL7 (`GLIBCXX_3.4.20` missing)):
   ```bash
-  git checkout 6.5.237
+  git checkout 7.3.492.25
   gclient sync
   ```
 
@@ -82,84 +82,26 @@ yum install gcc-c++ make libicu-devel
   rpmbuild -ba v8.spec
   ```
 
-## Compile V8 versions 5.5 and older (using Gyp)
-
-### install depot_tools
-
-  ```bash
-  git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
-  cd depot_tools
-  ```
-
-### adding PATH variable
-
-  ```bash
-  export PATH=`pwd`/depot_tools:"$PATH"
-  ```
-
-### download v8 source
-
-  ```bash
-  fetch v8
-  cd v8
-  ```
-
-### (optional) If you'd like to build a certain version:
-  ```bash
-  git checkout 5.2.1
-  gclient sync
-  ```
-
-### All build dependencies are fetched by running:
-
-  ```bash
-  gclient sync
-  ```
-
-### setting build variable
-
-  ```bash
-  # use libicu of operating system
-  export GYPFLAGS="-Duse_system_icu=1"
-
-  # Build (with internal snapshots)
-  export GYPFLAGS="${GYPFLAGS} -Dv8_use_snapshot=true -Dv8_use_external_startup_data=0 "
-
-  # eliminates swarming_client dependency
-  export GYPFLAGS="${GYPFLAGS} -Dtest_isolation_mode=noop"
-
-  # Force gyp to use system-wide ld.gold
-  export GYPFLAGS="${GYPFLAGS} -Dlinux_use_bundled_gold=0"
-  ```
-
-### compile
-
-  ```bash
-  make x64.release library=shared snapshot=on i18nsupport=on -j8
-  ```
-
-### create v8 binary rpm package
-
-change */home/v8/v8* to your v8 checkout directory.
-
-```bash
-rpmbuild -bb v8.spec --buildroot=/tmp/v8 --define="pre_built_dir /home/lesstif/v8"
-```
-
 ## compile v8js
 
+### Prerequisites:
 
-### clone v8js
+- V8 7.3.x
+- PHP 7.x from [SCL](https://www.softwarecollections.org/en/scls/rhscl/rh-php72/)
+
+```bash
+sudo yum install centos-release-scl
+sudo yum install rh-php72
+scl enable rh-php72 bash
+sudo yum install rh-php72-php-devel
+```
+
+### clone v8js (special version for compatibility with V8 7.3.x)
 
   ```bash
   cd ~
   git clone https://github.com/phpv8/v8js
-  ```
-
-### checkout tag
-
-  ```bash
-  git checkout php7
+  git checkout 85097c1
   ```
 
 ### compile
@@ -177,4 +119,12 @@ change */home/v8/v8js* to your v8js checkout directory.
 
 ```bash
 rpmbuild -bb v8js.spec --define="pre_built_dir /home/v8/v8js"
+```
+
+### alternativ copy module and ini files manually
+
+```bash
+sudo su
+cp /home/v8/v8js/modules/v8js.so /opt/rh/rh-php72/root/usr/lib64/php/modules
+echo -e "; Enable v8js extension module\nextension=v8js.so" >  /etc/opt/rh/rh-php72/php.d/99-v8js.ini
 ```
