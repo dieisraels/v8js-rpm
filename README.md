@@ -2,18 +2,7 @@
 
 These RPM were built to have an easy way to install the [google's javascript engine v8 5.x](https://developers.google.com/v8/) and [v8js](https://github.com/phpv8/v8js) php extension for EL7 users.
 
-## Install from RPM Package
-
-- You can install prebuilt rpm binary package from here. (Recommended method)
-
-
-```bash
-$ wget https://github.com/lesstif/v8js-rpm/releases/download/5.2.371/v8-5.2.371-1.x86_64.rpm
-$ wget https://github.com/lesstif/v8js-rpm/releases/download/1.3.1-1/v8js-1.3.1-2.x86_64.rpm
-$ sudo yum install v8*.rpm -y 
-```
-
-## Building the Binary RPM on RHEL 7
+## Building the Binary RPM on RHEL 7 / CentOS 7
 
 
 ### Prerequisites:
