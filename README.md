@@ -16,7 +16,7 @@ These RPM were built to have an easy way to install the [google's javascript eng
 yum install gcc-c++ make libicu-devel
 ```
 
-## Compile V8 5.6 and newer (using GN)
+## Compile V8 6.9.x ... 7.3.x (using GN)
 
 ### install depot_tools
 
