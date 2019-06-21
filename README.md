@@ -61,8 +61,7 @@ yum install gcc-c++ make libicu-devel
 
 ### Setup GN
   ```bash
-  tools/dev/v8gen.py -vv x64.release
-  echo is_component_build = true >> out.gn/x64.release/args.gn
+  tools/dev/v8gen.py -vv x64.release -- is_component_build=true
   ```
 
 ### Build
