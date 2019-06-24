@@ -21,6 +21,7 @@ yum install gcc-c++ make libicu-devel
 ### install depot_tools
 
   ```bash
+  cd /tmp
   git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
   cd depot_tools
   ```
@@ -75,7 +76,9 @@ yum install gcc-c++ make libicu-devel
 ### Prerequisites:
 
 - V8 7.3.x
-- PHP 7.x from [SCL](https://www.softwarecollections.org/en/scls/rhscl/rh-php72/)
+- PHP 7.x from [SCL](https://www.softwarecollections.org/en/scls/rhscl/rh-php72/) or EPEL
+
+#### SCL
 
 ```bash
 sudo yum install centos-release-scl
@@ -84,11 +87,22 @@ scl enable rh-php72 bash
 sudo yum install rh-php72-php-devel
 ```
 
+#### EPEL
+
+```bash
+sudo yum -y install epel-release
+sudo yum-config-manager --enable remi-php73
+sudo yum update
+sudo yum install php php-devel
+
+```
+
 ### clone v8js (special version for compatibility with V8 7.3.x)
 
   ```bash
-  cd ~
+  cd /tmp
   git clone https://github.com/phpv8/v8js
+  cd v8js
   git checkout 85097c1
   ```
 
@@ -96,7 +110,9 @@ sudo yum install rh-php72-php-devel
 
   ```bash
   phpize
-  ./configure --with-v8js=/opt/v8 LDFLAGS="-lstdc++"
+  # check path for php-config
+  which php-config
+  ./configure --with-php-config=[PATH_TO_PHP_CONFIG] --with-v8js=/opt/v8 LDFLAGS="-lstdc++"
   make
   make test
   ```
@@ -112,7 +128,9 @@ rpmbuild -bb v8js.spec --define="pre_built_dir /home/v8/v8js"
 ### alternativ copy module and ini files manually
 
 ```bash
+# check path for php modules
+php-config --extension-dir
 sudo su
-cp /home/v8/v8js/modules/v8js.so /opt/rh/rh-php72/root/usr/lib64/php/modules
-echo -e "; Enable v8js extension module\nextension=v8js.so" >  /etc/opt/rh/rh-php72/php.d/99-v8js.ini
+cp /tmp/v8js/modules/v8js.so [PATH_TO_PHP_EXTENSION_DIR]
+echo -e "; Enable v8js extension module\nextension=v8js.so" >  [PATH_TO_PHP_INI_DIR]/99-v8js.ini
 ```
