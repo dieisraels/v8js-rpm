@@ -23,7 +23,6 @@ yum install gcc-c++ make libicu-devel
   ```bash
   cd /tmp
   git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
-  cd depot_tools
   ```
 
 ### adding PATH variable
@@ -34,6 +33,7 @@ yum install gcc-c++ make libicu-devel
 
 ### download v8 source
   ```bash
+  cd depot_tools
   fetch v8
   cd v8
   ```
